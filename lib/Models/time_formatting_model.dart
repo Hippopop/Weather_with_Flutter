@@ -52,9 +52,9 @@ class TimeFormatter {
   }
 
   String takeHour(String time) {
-    final String hour = time.substring(0, time.indexOf(":"));
+    final int hour = int.parse(time.substring(0, time.indexOf(":")));
     final String sub = time.substring(time.length - 2);
-    return "$hour $sub";
+    return "$hour$sub";
   }
 
   factory TimeFormatter.fromUnix(int unix) {

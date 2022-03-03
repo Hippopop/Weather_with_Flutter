@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:a_proper_weather_app/Controller/data_controller.dart';
 import 'package:a_proper_weather_app/Models/main_weather_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,25 +11,21 @@ import '../Models/time_formatting_model.dart';
 
 class MainProviderClass with ChangeNotifier {
   MainWeatherModel? mainWeatherModel;
-  String unit = 'metric';
-  String lat = '43.3657102';
-  String lon = '20.8080928';
+  Data neededData = Data();
   String? location;
   Future<void> modelSetter() async {
     try {
       String url =
           //'';
-          'https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&units=$unit&exclude=minutely&appid=98020120367c4f6853e78032308972cd';
+          'https://api.openweathermap.org/data/2.5/onecall?lat=${neededData.latitude}&lon=${neededData.latitude}&units=${neededData.unit.name}&exclude=minutely&appid=98020120367c4f6853e78032308972cd';
 
       final http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> decodedJson =
             json.decode(response.body) as Map<String, dynamic>;
-        print(response.body);
         final MainWeatherModel model = MainWeatherModel.fromMap(decodedJson);
         mainWeatherModel = model;
         notifyListeners();
-        //return model;
       } else {
         if (kDebugMode) {
           print("Main model faced error!");
@@ -44,19 +41,12 @@ class MainProviderClass with ChangeNotifier {
   }
 
   Stream<MainWeatherModel?> weatherDataStream() async* {
-    int entry = 0;
     while (true) {
-      await Future.delayed(Duration(seconds: (entry == 0) ? 0 : 10));
-      print("lat = $lat");
-      print("lon = $lon");
+      await Future.delayed(Duration(seconds: (neededData.reload) ? 0 : 10));
+      print("lat = ${neededData.latitude}");
+      print("lon = ${neededData.longitude}");
       await modelSetter();
-      /* MainWeatherModel? weather = await modelSetter();
-      if (kDebugMode) {
-        //print("inside stream: ${weather?.current.weather.main}");
-      }
-      mainWeatherModel = weather;*/
-
-      entry++;
+      neededData.reload = false;
       notifyListeners();
       yield mainWeatherModel;
     }
@@ -88,13 +78,15 @@ class MainProviderClass with ChangeNotifier {
           'Location permissions are permanently denied, we cannot request permissions.');
     } else {
       final Position found = await Geolocator.getCurrentPosition();
-      lat = "${found.latitude}";
-      lon = "${found.longitude}";
-      final List<Placemark> place =
-          await placemarkFromCoordinates(double.parse(lat), double.parse(lon));
+      neededData.latitude = "${found.latitude}";
+      neededData.longitude = "${found.longitude}";
+      final List<Placemark> place = await placemarkFromCoordinates(
+          double.parse(neededData.latitude),
+          double.parse(neededData.longitude));
       location = "${place[0].locality}, ${place[0].country}";
       if (kDebugMode) {
-        print("from position : $lat and $lon");
+        print(
+            "from position : ${neededData.latitude} and ${neededData.longitude}");
       }
       return found;
     }

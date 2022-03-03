@@ -1,5 +1,6 @@
 import 'package:a_proper_weather_app/Const/constants.dart';
 import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
+import 'package:a_proper_weather_app/Controller/data_controller.dart';
 import 'package:a_proper_weather_app/Models/Source%20Data%20Model/home_today_model.dart';
 import 'package:a_proper_weather_app/Models/Source%20Data%20Model/hourly_pill_model.dart';
 import 'package:a_proper_weather_app/Models/main_weather_model.dart';
@@ -52,6 +53,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )
               ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                final Data setter = Data();
+                setState(() {
+                  setter.reload = true;
+                });
+              },
+              child: const Icon(Icons.autorenew_rounded),
             ),
             body: Column(
               children: [
@@ -166,22 +176,19 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         flex: 40,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            children: [
-                              // HourlyPillInactive(
-                              //   screen: screen,
-                              //   hour: snapshot.data!.hourly[5],
-                              // ),
-                              HourlyPillActive(
-                                screen: screen,
-                                model: PillModel(
-                                    unit: "matric",
-                                    data: snapshot.data?.hourly[0]),
-                              ),
-                            ],
-                          ),
-                        ),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.hourly
+                                  .map(
+                                    (hour) => HourlyPillActive(
+                                      screen: screen,
+                                      model:
+                                          PillModel(unit: "metric", data: hour),
+                                    ),
+                                  )
+                                  .toList(),
+                            )),
                       ),
                       const Spacer(
                         flex: 2,

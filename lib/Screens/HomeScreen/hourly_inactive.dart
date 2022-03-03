@@ -1,9 +1,8 @@
 import 'package:a_proper_weather_app/Const/constants.dart';
+import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
 import 'package:a_proper_weather_app/Models/main_weather_model.dart';
 import 'package:a_proper_weather_app/Models/time_formatting_model.dart';
 import 'package:flutter/material.dart';
-
-import '../../Const/custom_icons_icons.dart';
 
 class HourlyPillInactive extends StatelessWidget {
   HourlyPillInactive({
@@ -35,7 +34,7 @@ class HourlyPillInactive extends StatelessWidget {
               child: Center(
             child: FittedBox(
               child: Text(
-                "${TimeFormatter.fromUnix(hour.dt as int).hour}",
+                "${TimeFormatter.fromUnix(hour.dt).hour}",
                 style: subText,
               ),
             ),
