@@ -1,5 +1,5 @@
 import 'package:a_proper_weather_app/Const/constants.dart';
-import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
+import 'package:a_proper_weather_app/Controller/data_controller.dart';
 import 'package:a_proper_weather_app/Models/Source%20Data%20Model/home_today_model.dart';
 import 'package:flutter/material.dart';
 
@@ -38,11 +38,12 @@ class HomeTop extends StatelessWidget {
                                   const EdgeInsets.only(top: 10, right: 12),
                               alignment: Alignment.topRight,
                               //color: Colors.grey,
-                              child: Icon(
-                                CustomIcons.hail_inv,
+                              child: icon[needed.icon],
+                              /*Icon(
+                                CustomIcons.cloud,
                                 color: Colors.blue,
                                 size: 36,
-                              ),
+                              ),*/
                             ),
                           ),
                           Expanded(

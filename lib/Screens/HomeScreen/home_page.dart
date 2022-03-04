@@ -1,10 +1,8 @@
 import 'package:a_proper_weather_app/Const/constants.dart';
 import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
 import 'package:a_proper_weather_app/Controller/data_controller.dart';
-import 'package:a_proper_weather_app/Models/Source%20Data%20Model/home_today_model.dart';
-import 'package:a_proper_weather_app/Models/Source%20Data%20Model/hourly_pill_model.dart';
-import 'package:a_proper_weather_app/Models/main_weather_model.dart';
-import 'package:a_proper_weather_app/Provider/parsing_function.dart';
+import 'package:a_proper_weather_app/Controller/main_data_controller.dart';
+import 'package:a_proper_weather_app/Models/Source%20Data%20Model/main_data_model.dart';
 import 'package:a_proper_weather_app/Screens/HomeScreen/home_top.dart';
 import 'package:flutter/material.dart';
 
@@ -21,10 +19,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    MainProviderClass prov = MainProviderClass();
     final screen = MediaQuery.of(context).size;
-    return StreamBuilder<MainWeatherModel?>(
-      stream: prov.weatherDataStream(),
+    return StreamBuilder<MainDataModel>(
+      stream: MainDataController().dataStreamer(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           return Scaffold(
@@ -47,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: IconButton(
                     onPressed: () async {
-                      final x = await prov.determinePosition();
+                      await Data().determinePosition();
                     },
                     icon: const Icon(Icons.location_on_rounded),
                   ),
@@ -67,10 +64,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: HomeTop(
-                    needed:
-                        HomeTopPortion(model: snapshot.data, unit: "matric"),
-                  ),
+                  child: HomeTop(needed: snapshot.data!.homeTopPortion),
                 ),
 
                 ///Day changing panel
@@ -106,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                                         Container(
                                           height: 4,
                                           width: 4,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: textColor,
                                           ),
@@ -179,14 +173,9 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ListView(
                               scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.hourly
-                                  .map(
-                                    (hour) => HourlyPillActive(
-                                      screen: screen,
-                                      model:
-                                          PillModel(unit: "metric", data: hour),
-                                    ),
-                                  )
+                              children: snapshot.data!.pillModelList
+                                  .map((hour) => HourlyPillActive(
+                                      screen: screen, model: hour))
                                   .toList(),
                             )),
                       ),
