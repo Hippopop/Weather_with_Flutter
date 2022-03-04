@@ -1,57 +1,58 @@
 import 'dart:convert';
 
 import 'package:a_proper_weather_app/Controller/data_controller.dart';
+import 'package:a_proper_weather_app/Models/Source%20Data%20Model/main_data_model.dart';
 import 'package:a_proper_weather_app/Models/main_weather_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
-import '../Models/time_formatting_model.dart';
-
-class MainProviderClass with ChangeNotifier {
-  MainWeatherModel? mainWeatherModel;
+class MainDataController {
+  MainDataModel mainDataModel = MainDataModel();
   Data neededData = Data();
-  String? location;
-  Future<void> modelSetter() async {
+  Future<MainWeatherModel?> modelSetter() async {
     try {
-      String url =
-          //'';
-          'https://api.openweathermap.org/data/2.5/onecall?lat=${neededData.latitude}&lon=${neededData.latitude}&units=${neededData.unit.name}&exclude=minutely&appid=98020120367c4f6853e78032308972cd';
+      final String url = '';
+      //'https://api.openweathermap.org/data/2.5/onecall?lat=${neededData.latitude}&lon=${neededData.latitude}&units=${neededData.unit.name}&exclude=minutely&appid=98020120367c4f6853e78032308972cd';
 
       final http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final Map<String, dynamic> decodedJson =
             json.decode(response.body) as Map<String, dynamic>;
         final MainWeatherModel model = MainWeatherModel.fromMap(decodedJson);
-        mainWeatherModel = model;
-        notifyListeners();
+        return model;
       } else {
         if (kDebugMode) {
           print("Main model faced error!");
         }
+        return null;
       }
     } catch (error) {
       if (kDebugMode) {
         print("caught error: $error");
       }
-      //return null;
+      return null;
     }
-    //return null;
   }
 
-  Stream<MainWeatherModel?> weatherDataStream() async* {
+  Stream<MainDataModel> dataStreamer() async* {
     while (true) {
       await Future.delayed(Duration(seconds: (neededData.reload) ? 0 : 10));
-      print("lat = ${neededData.latitude}");
-      print("lon = ${neededData.longitude}");
-      await modelSetter();
+      final MainWeatherModel? model = await modelSetter();
+      if (kDebugMode) {
+        print("lat: ${neededData.latitude}, lon: ${neededData.longitude}");
+      }
+      mainDataModel = MainDataModel(mainModel: model);
       neededData.reload = false;
-      notifyListeners();
-      yield mainWeatherModel;
+      yield mainDataModel;
     }
   }
 
+  ///
+  ///
+  ///
+  /// Needs to be moved
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -75,7 +76,8 @@ class MainProviderClass with ChangeNotifier {
 
     if (permission == LocationPermission.deniedForever) {
       return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
     } else {
       final Position found = await Geolocator.getCurrentPosition();
       neededData.latitude = "${found.latitude}";
@@ -83,22 +85,23 @@ class MainProviderClass with ChangeNotifier {
       final List<Placemark> place = await placemarkFromCoordinates(
           double.parse(neededData.latitude),
           double.parse(neededData.longitude));
-      location = "${place[0].locality}, ${place[0].country}";
+      neededData.currentLocation = "${place[0].locality}, ${place[0].country}";
       if (kDebugMode) {
         print(
-            "from position : ${neededData.latitude} and ${neededData.longitude}");
+          "from position : ${neededData.latitude} and ${neededData.longitude}",
+        );
       }
       return found;
     }
   }
 
-  Stream<String?> currentDay() async* {
-    while (true) {
-      await Future.delayed(const Duration(seconds: 3));
-      final TimeFormatter format = TimeFormatter(unformatted: DateTime.now());
-      yield format.sortedDate;
-    }
-  }
+  // Stream<String?> currentDay() async* {
+  //   while (true) {
+  //     await Future.delayed(const Duration(seconds: 3));
+  //     final TimeFormatter format = TimeFormatter(unformatted: DateTime.now());
+  //     yield format.sortedDate;
+  //   }
+  // }
 
   Future<void> setStringLocation() async {
     List<Location> locations =
