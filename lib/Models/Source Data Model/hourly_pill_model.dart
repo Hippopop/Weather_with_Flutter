@@ -7,7 +7,7 @@ class PillModel {
   Data data = Data();
   String unit = "";
   String hour = "00:00";
-  String icon = "";
+  String icon = "empty";
   var temp;
   Current? current;
   PillModel({this.current}) {

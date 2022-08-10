@@ -13,7 +13,7 @@ class MainDataController {
     try {
       final String url =
           //
-          //'';
+          //    '';
           'https://api.openweathermap.org/data/2.5/onecall?lat=${neededData.latitude}&lon=${neededData.latitude}&units=${neededData.unit.name}&exclude=minutely&appid=$apiKey';
 
       final http.Response response = await http.get(Uri.parse(url));
@@ -39,7 +39,7 @@ class MainDataController {
 
   Stream<MainDataModel> dataStreamer() async* {
     while (true) {
-      await Future.delayed(Duration(seconds: (neededData.reload) ? 0 : 10));
+      await Future.delayed(Duration(seconds: (neededData.reload) ? 0 : 3));
       final MainWeatherModel? model = await modelSetter();
       if (kDebugMode) {
         print("lat: ${neededData.latitude}, lon: ${neededData.longitude}");

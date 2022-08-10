@@ -1,5 +1,4 @@
 import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -14,7 +13,7 @@ class Data with ChangeNotifier {
   String longitude = "91.808105";
   Unit unit = Unit.metric;
   String currentLocation = "Chattogram, Bangladesh";
-  bool reload = true;
+  bool reload = false;
 
   Future<Position> determinePosition() async {
     bool serviceEnabled;
@@ -71,38 +70,110 @@ Map<String, Icon> icon = {
     color: Colors.amber,
     size: 36,
   ),
-  '02d': const Icon(CustomIcons.cloud_sun_inv, color: Colors.blue,
-                                size: 36,),
-  '03d': const Icon(CustomIcons.cloud_inv, color: Colors.blue,
-                                size: 36,),
-  '04d': const Icon(CustomIcons.clouds_inv, color: Colors.blue,
-                                size: 36,),
-  '09d': const Icon(CustomIcons.hail_inv, color: Colors.blue,
-                                size: 36,),
-  '10d': const Icon(CustomIcons.rain, color: Colors.blue,
-                                size: 36,),
-  '11d': const Icon(CustomIcons.clouds_flash_alt, color: Colors.blue,
-                                size: 36,),
-  '13d': const Icon(CustomIcons.snow_heavy, color: Colors.blue,
-                                size: 36,),
-  '50d': const Icon(CustomIcons.fog_sun, color: Colors.blue,
-                                size: 36,),
-  '01n': const Icon(CustomIcons.moon_inv, color: Colors.blue,
-                                size: 36,),
-  '02n': const Icon(CustomIcons.cloud_moon_inv, color: Colors.blue,
-                                size: 36,),
-  '03n': const Icon(CustomIcons.cloud_inv, color: Colors.blue,
-                                size: 36,),
-  '04n': const Icon(CustomIcons.clouds_inv, color: Colors.blue,
-                                size: 36,),
-  '09n': const Icon(CustomIcons.hail_inv, color: Colors.blue,
-                                size: 36,),
-  '10n': const Icon(CustomIcons.rain, color: Colors.blue,
-                                size: 36,),
-  '11n': const Icon(CustomIcons.clouds_flash_alt, color: Colors.blue,
-                                size: 36,),
-  '13n': const Icon(CustomIcons.snow_heavy, color: Colors.blue,
-                                size: 36,),
-  '50n': const Icon(CustomIcons.fog_moon, color: Colors.blue,
-                                size: 36,),
+  '02d': const Icon(
+    CustomIcons.cloud_sun_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '03d': const Icon(
+    CustomIcons.cloud_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '04d': const Icon(
+    CustomIcons.clouds_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '09d': const Icon(
+    CustomIcons.hail_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '10d': const Icon(
+    CustomIcons.rain,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '11d': const Icon(
+    CustomIcons.clouds_flash_alt,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '13d': const Icon(
+    CustomIcons.snow_heavy,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '50d': const Icon(
+    CustomIcons.fog_sun,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '01n': const Icon(
+    CustomIcons.moon_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '02n': const Icon(
+    CustomIcons.cloud_moon_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '03n': const Icon(
+    CustomIcons.cloud_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '04n': const Icon(
+    CustomIcons.clouds_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '09n': const Icon(
+    CustomIcons.hail_inv,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '10n': const Icon(
+    CustomIcons.rain,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '11n': const Icon(
+    CustomIcons.clouds_flash_alt,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '13n': const Icon(
+    CustomIcons.snow_heavy,
+    color: Colors.blue,
+    size: 36,
+  ),
+  '50n': const Icon(
+    CustomIcons.fog_moon,
+    color: Colors.blue,
+    size: 36,
+  ),
+  'empty': const Icon(
+    CustomIcons.na,
+    color: Colors.blue,
+    size: 36,
+  ),
 };
+enum Main {
+  Thunderstorm,
+  Drizzle,
+  Rain,
+  Snow,
+  Mist,
+  Smoke,
+  Haze,
+  Dust,
+  Fog,
+  Sand,
+  Ash,
+  Squall,
+  Tomado,
+  Clear
+}

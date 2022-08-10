@@ -4,7 +4,9 @@ import 'package:a_proper_weather_app/Controller/data_controller.dart';
 import 'package:a_proper_weather_app/Controller/main_data_controller.dart';
 import 'package:a_proper_weather_app/Models/Source%20Data%20Model/main_data_model.dart';
 import 'package:a_proper_weather_app/Screens/HomeScreen/home_top.dart';
+import 'package:a_proper_weather_app/Screens/HomeScreen/hourly_inactive.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'chance_of_rain.dart';
 import 'hourly_active.dart';
@@ -17,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int X = 1;
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
@@ -173,10 +176,19 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ListView(
                               scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.pillModelList
-                                  .map((hour) => HourlyPillActive(
-                                      screen: screen, model: hour))
-                                  .toList(),
+                              children:
+                                  snapshot.data!.pillModelList.map((hour) {
+                                X++;
+                                if (X.isEven) {
+                                  return HourlyPillActive(
+                                    screen: screen,
+                                    model: hour,
+                                  );
+                                } else {
+                                  return HourlyPillInactive(
+                                      screen: screen, hour: hour);
+                                }
+                              }).toList(),
                             )),
                       ),
                       const Spacer(
@@ -193,7 +205,8 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         } else {
-          return const CircularProgressIndicator();
+          return Lottie.network(
+              'https://assets8.lottiefiles.com/packages/lf20_fhzpm1mu.json');
         }
       },
     );

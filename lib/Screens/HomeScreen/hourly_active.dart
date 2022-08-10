@@ -1,16 +1,16 @@
 import 'package:a_proper_weather_app/Const/constants.dart';
-import 'package:a_proper_weather_app/Const/custom_icons_icons.dart';
+import 'package:a_proper_weather_app/Controller/data_controller.dart';
 import 'package:a_proper_weather_app/Models/Source%20Data%20Model/hourly_pill_model.dart';
 import 'package:flutter/material.dart';
 
 class HourlyPillActive extends StatefulWidget {
-  HourlyPillActive({
+  const HourlyPillActive({
     Key? key,
     required this.screen,
     required this.model,
   }) : super(key: key);
   final Size screen;
-  PillModel model;
+  final PillModel model;
 
   @override
   State<HourlyPillActive> createState() => _HourlyPillActiveState();
@@ -24,7 +24,7 @@ class _HourlyPillActiveState extends State<HourlyPillActive> {
       width: widget.screen.width / 5,
       height: double.infinity,
       margin: EdgeInsets.only(bottom: 20, left: 5, right: 5),
-      padding: EdgeInsets.symmetric(vertical: 3),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
         color: textColor,
         borderRadius: BorderRadius.circular(40),
@@ -44,18 +44,16 @@ class _HourlyPillActiveState extends State<HourlyPillActive> {
             ),
           )),
           Expanded(
-              child: Container(
-            padding: const EdgeInsets.all(1),
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: overlayColor,
+            child: Container(
+              padding: const EdgeInsets.all(1),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: overlayColor,
+              ),
+              child: icon[widget.model.icon],
             ),
-            child: Icon(
-              CustomIcons.sun,
-              color: Colors.blue,
-            ),
-          )),
+          ),
           Expanded(
             child: Center(
               child: Text.rich(

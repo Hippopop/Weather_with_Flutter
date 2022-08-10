@@ -1,37 +1,3 @@
-// To parse this JSON data, do
-//
-//     final mainWeatherModel = mainWeatherModelFromMap(jsonString);
-
-//MainWeatherModel mainWeatherModelFromMap(String str) => MainWeatherModel.fromMap(json.decode(str as Map));
-
-// String mainWeatherModelToMap(MainWeatherModel data) =>
-//     json.encode(data.toMap());
-
-/*
-enum Description {
-  CLEAR_SKY,
-  MODERATE_RAIN,
-  FEW_CLOUDS,
-  SCATTERED_CLOUDS,
-  OVERCAST_CLOUDS,
-  LIGHT_RAIN
-}
-
-final descriptionValues = EnumValues({
-  "clear sky": Description.CLEAR_SKY,
-  "few clouds": Description.FEW_CLOUDS,
-  "light rain": Description.LIGHT_RAIN,
-  "moderate rain": Description.MODERATE_RAIN,
-  "overcast clouds": Description.OVERCAST_CLOUDS,
-  "scattered clouds": Description.SCATTERED_CLOUDS
-});
-
-enum Main { CLEAR, RAIN, CLOUDS }
-
-final mainValues =
-    EnumValues({"Clear": Main.CLEAR, "Clouds": Main.CLOUDS, "Rain": Main.RAIN});
-*/
-
 class MainWeatherModel {
   MainWeatherModel({
     required this.lat,
@@ -70,16 +36,6 @@ class MainWeatherModel {
       ),
     );
   }
-
-// Map<String, dynamic> toMap() => {
-//       "lat": lat,
-//       "lon": lon,
-//       "timezone": timezone,
-//       "timezone_offset": timezoneOffset,
-//       "current": current.toMap(),
-//       "hourly": List<dynamic>.from(hourly.map((x) => x.toMap())),
-//       "daily": List<dynamic>.from(daily.map((x) => x.toMap())),
-//     };
 }
 
 class Current {
@@ -145,26 +101,6 @@ class Current {
           : Rain.fromMap(json["rain"] as Map<String, dynamic>),
     );
   }
-
-// Map<String, dynamic> toMap() => {
-//       "dt": dt,
-//       "sunrise": sunrise,
-//       "sunset": sunset,
-//       "temp": temp,
-//       "feels_like": feelsLike,
-//       "pressure": pressure,
-//       "humidity": humidity,
-//       "dew_point": dewPoint,
-//       "uvi": uvi,
-//       "clouds": clouds,
-//       "visibility": visibility,
-//       "wind_speed": windSpeed,
-//       "wind_deg": windDeg,
-//       "wind_gust": windGust,
-//       "weather": List<dynamic>.from(weather.map((x) => x.toMap())),
-//       "pop": pop,
-//       "rain": rain.toMap(),
-//     };
 }
 
 class Rain {
@@ -177,10 +113,6 @@ class Rain {
   factory Rain.fromMap(Map<String, dynamic> json) => Rain(
         the1H: json["1h"],
       );
-
-// Map<String, dynamic> toMap() => {
-//       "1h": the1H,
-//     };
 }
 
 class Weather {
@@ -202,13 +134,6 @@ class Weather {
         description: json["description"] as String,
         icon: json["icon"] as String,
       );
-
-// Map<String, dynamic> toMap() => {
-//       "id": id,
-//       "main": mainValues.reverse!,
-//       "description": descriptionValues.reverse(description),
-//       "icon": icon,
-//     };
 }
 
 class Daily {
@@ -280,28 +205,6 @@ class Daily {
         uvi: json["uvi"],
         rain: json["rain"],
       );
-
-// Map<String, dynamic> toMap() => {
-//       "dt": dt,
-//       "sunrise": sunrise,
-//       "sunset": sunset,
-//       "moonrise": moonrise,
-//       "moonset": moonset,
-//       "moon_phase": moonPhase,
-//       "temp": temp.toMap(),
-//       "feels_like": feelsLike.toMap(),
-//       "pressure": pressure,
-//       "humidity": humidity,
-//       "dew_point": dewPoint,
-//       "wind_speed": windSpeed,
-//       "wind_deg": windDeg,
-//       "wind_gust": windGust,
-//       "weather": List<dynamic>.from(weather.map((x) => x.toMap())),
-//       "clouds": clouds,
-//       "pop": pop,
-//       "uvi": uvi,
-//       "rain": rain,
-//     };
 }
 
 class FeelsLike {
@@ -323,13 +226,6 @@ class FeelsLike {
         eve: json["eve"],
         morn: json["morn"],
       );
-
-// Map<String, dynamic> toMap() => {
-//       "day": day,
-//       "night": night,
-//       "eve": eve,
-//       "morn": morn,
-//     };
 }
 
 class Temp {
@@ -357,15 +253,6 @@ class Temp {
         eve: json["eve"],
         morn: json["morn"],
       );
-
-// Map<String, dynamic> toMap() => {
-//       "day": day,
-//       "min": min,
-//       "max": max,
-//       "night": night,
-//       "eve": eve,
-//       "morn": morn,
-//     };
 }
 /*
 
